@@ -4,6 +4,7 @@ from rest_framework import status
 from .models import Profile
 from .renderers import ProfileJSONRenderer
 from .serializers import ProfileSerializer
+from .exceptions import ProfileDoesNotExists
 
 
 class ProfileRetrieveAPIView(RetrieveAPIView):
@@ -18,7 +19,7 @@ class ProfileRetrieveAPIView(RetrieveAPIView):
                 user__username=username
             )
         except Profile.DoesNotExist:
-            raise
+            raise ProfileDoesNotExists
 
         serializer = self.serializer_class(profile)
 
