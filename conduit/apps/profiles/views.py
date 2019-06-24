@@ -5,7 +5,7 @@ from .models import Profile
 from .renderers import ProfileJSONRenderer
 from .serializers import ProfileSerializer
 from .exceptions import ProfileDoesNotExists
-
+from rest_framework.generics import RetrieveAPIView
 
 class ProfileRetrieveAPIView(RetrieveAPIView):
     permission_classes = (AllowAny,)
