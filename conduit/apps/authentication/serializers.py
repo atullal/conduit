@@ -75,12 +75,13 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('email', 'username', 'password', 'token')
+        fields = ('email', 'username', 'password', 'token','profile','bio','image',)
 
         read_only_field = ('token', )
     
     def update(self, instance, validated_data):
         password = validated_data.pop('password', None)
+        profile_data = validated_data.pop()
 
         for (key, value) in validated_data.items():
             setattr(instance, key, value)
@@ -89,5 +90,10 @@ class UserSerializer(serializers.ModelSerializer):
             instance.set_password(password)
         
         instance.save()
+
+        for (key, value) in profile_data.items():
+            setattr(instance.profile, key, value)
+        
+        instance.profile.save()
 
         return instance
