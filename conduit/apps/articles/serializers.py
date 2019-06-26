@@ -13,11 +13,11 @@ class ArticleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Article
         fields = ('author', 'body', 'createdAt', 'description', 'slug', 'title', 'updatedAt', )
-        
-        def create(self, validated_data):
-            author = self.context.get('author', None)
-
-            return Article.objects.create(author=author, **validated_data)
+    
+    def create(self, validated_data):
+        author = self.context.get('author', None)
+        print(author)
+        return Article.objects.create(author=author, **validated_data)
 
     def get_created_at(self, instance):
         return instance.created_at.isoformat()

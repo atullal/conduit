@@ -25,8 +25,18 @@ class ArticleViewSet( mixins.CreateModelMixin, mixins.ListModelMixin, mixins.Ret
         )
         serializer.is_valid(raise_exception=True)
         serializer.save()
-
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+    def retrieve(self, request, slug):
+        try:
+            serializer_instance = self.queryset.get(slug=slug)
+        except Article.DoesNotExist:
+            raise NotFound('An article with this slug does not exist.')
+
+        serializer = self.serializer_class(serializer_instance)
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
 
     def update(self, request, slug):
 
