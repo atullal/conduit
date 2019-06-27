@@ -1,6 +1,4 @@
 from django.apps import AppConfig
-
-
 class ArticlesAppConfig(AppConfig):
     name = 'conduit.apps.articles'
     label = 'articles'

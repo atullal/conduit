@@ -8,7 +8,6 @@ from .models import Article
 @receiver(pre_save, sender=Article)
 def add_slug_to_article_if_not_exists(sender, instance, *args, **kwargs):
     MAXIMUM_SLUG_LENGTH = 255
-
     if instance and not instance.slug:
         slug = slugify(instance.title)
         unique = generate_random_string()
