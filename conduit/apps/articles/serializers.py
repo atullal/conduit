@@ -2,6 +2,7 @@ from rest_framework import serializers
 from conduit.apps.profiles.serializers import ProfileSerializer
 from .models import Article, Comment
 
+
 class ArticleSerializer(serializers.ModelSerializer):
 
     author = ProfileSerializer(read_only=True)
@@ -13,8 +14,9 @@ class ArticleSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Article
-        fields = ('author', 'body', 'createdAt', 'description', 'slug', 'title', 'updatedAt', )
-    
+        fields = ('author', 'body', 'createdAt', 'description',
+                  'slug', 'title', 'updatedAt', )
+
     def create(self, validated_data):
         author = self.context.get('author', None)
         print(author)
@@ -26,8 +28,9 @@ class ArticleSerializer(serializers.ModelSerializer):
     def get_updated_at(self, instance):
         return instance.updated_at.isoformat()
 
+
 class CommentSerializer(serializers.ModelSerializer):
-    
+
     author = ProfileSerializer(required=False)
 
     createdAt = serializers.SerializerMethodField(method_name='get_created_at')

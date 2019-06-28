@@ -7,8 +7,9 @@ from .models import Article, Comment
 from .renderers import ArticleJSONRenderer, CommentJSONRenderer
 from .serializers import ArticleSerializer, CommentSerializer
 
-class ArticleViewSet( mixins.CreateModelMixin, mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet ):
-    
+
+class ArticleViewSet(mixins.CreateModelMixin, mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet):
+
     lookup_field = 'slug'
 
     queryset = Article.objects.select_related('author', 'author__user')
@@ -37,14 +38,13 @@ class ArticleViewSet( mixins.CreateModelMixin, mixins.ListModelMixin, mixins.Ret
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-
     def update(self, request, slug):
 
         try:
             serializer_instance = self.queryset.get(slug=slug)
         except Article.DoesNotExist:
             raise NotFound('An article with this slug does not exist.')
-            
+
         serializer_data = request.data.get('article', {})
 
         serializer = self.serializer_class(
@@ -55,8 +55,9 @@ class ArticleViewSet( mixins.CreateModelMixin, mixins.ListModelMixin, mixins.Ret
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+
 class CommentsListCreateAPIView(generics.ListCreateAPIView):
-    
+
     lookup_field = 'article__slug'
     lookup_url_kwarg = 'article_slug'
     permission_classes = (IsAuthenticatedOrReadOnly,)
@@ -86,3 +87,20 @@ class CommentsListCreateAPIView(generics.ListCreateAPIView):
         serializer.save()
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+class CommentsDestroyAPIView(generics.DestroyAPIView):
+
+    lookup_url_kwarg = 'comment_pk'
+    permission_classes = (IsAuthenticatedOrReadOnly,)
+    queryset = Comment.objects.all()
+
+    def destroy(self, request, article_slug=None, comment_pk=None):
+        try:
+            comment = Comment.objects.get(pk=comment_pk)
+        except Comment.DoesNotExist:
+            raise NotFound('A comment with this ID does not exist.')
+
+        comment.delete()
+
+        return Response(None, status=status.HTTP_204_NO_CONTENT)
