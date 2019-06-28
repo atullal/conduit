@@ -20,6 +20,8 @@ class ProfileRetrieveAPIView(RetrieveAPIView):
         except Profile.DoesNotExist:
             raise NotFound('A profile with this username does not exist.')
 
-        serializer = self.serializer_class(profile)
+        serializer = self.serializer_class(profile, context={
+            'request': request
+        })
 
         return Response(serializer.data, status=status.HTTP_200_OK)
