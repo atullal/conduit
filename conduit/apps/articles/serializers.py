@@ -22,7 +22,7 @@ class ArticleSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Article
-        fields = ('author', 'body', 'createdAt', 'description', 'favorited', 'favoritesCount', 'tagList'
+        fields = ('author', 'body', 'createdAt', 'description', 'favorited', 'favoritesCount', 'tagList',
                   'slug', 'title', 'updatedAt', )
 
     def create(self, validated_data):
