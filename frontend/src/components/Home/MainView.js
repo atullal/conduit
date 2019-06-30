@@ -10,12 +10,12 @@ const MainView = props => {
   return (
     <div className="col-md-9">
       <div className="feed-toggle">
-        <ul className="nav nav-pills outline-active">
+        <ul className="nav outline-active">
 
-        <li className="nav-item">
+        <li className="">
           <a
             href=""
-            className="nav-link active">
+            className="active">
             Global Feed
           </a>
         </li>
@@ -24,8 +24,7 @@ const MainView = props => {
       </div>
 
       <ArticleList
-        articles={props.articles} 
-      />
+        articles={props.articles} />
     </div>
   );
 };
