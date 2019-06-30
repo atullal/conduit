@@ -1,6 +1,7 @@
 from django.db import models
 
 from conduit.apps.core.models import TimestampedModel
+from .search import ArticleIndex
 
 class Article(TimestampedModel):
     slug = models.SlugField(db_index=True, max_length=255, unique=True)
@@ -20,6 +21,13 @@ class Article(TimestampedModel):
     def __str__(self):
         return self.title
 
+    def indexing(self):
+        obj = ArticleIndex(meta={'id': self.id}, author=self.author.user.username, created_at=self.created_at, updated_at=self.updated_at, title=self.title, body=self.body, description=self.description, slug=self.slug, tags=str(self.tags))
+        print(obj)
+        obj.save()
+        return obj.to_dict(include_meta=True)
+
+
 class Comment(TimestampedModel):
     body = models.TextField()
 
@@ -37,3 +45,6 @@ class Tag(TimestampedModel):
 
     def __str__(self):
         return self.tag
+
+
+
