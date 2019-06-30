@@ -23,7 +23,6 @@ class Article(TimestampedModel):
 
     def indexing(self):
         obj = ArticleIndex(meta={'id': self.id}, author=self.author.user.username, created_at=self.created_at, updated_at=self.updated_at, title=self.title, body=self.body, description=self.description, slug=self.slug, tags=str(self.tags))
-        print(obj)
         obj.save()
         return obj.to_dict(include_meta=True)
 

@@ -1,4 +1,4 @@
-from django.db.models.signals import pre_save
+from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
 from django.utils.text import slugify
 from conduit.apps.core.utils import generate_random_string
@@ -24,3 +24,7 @@ def add_slug_to_article_if_not_exists(sender, instance, *args, **kwargs):
                 slug = '-'.join(parts[:-1])
 
         instance.slug = slug + '-' + unique
+
+@receiver(post_save, sender=Article)
+def index_post(sender, instance, **kwargs):
+    instance.indexing()
