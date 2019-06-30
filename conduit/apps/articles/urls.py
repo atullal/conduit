@@ -13,8 +13,6 @@ urlpatterns = [
 
     path('articles/feed', ArticlesFeedAPIView.as_view()),
 
-    path('', include(router.urls)),
-
     path('articles/<slug:article_slug>/favorite',
          ArticlesFavoriteAPIView.as_view()),
 
