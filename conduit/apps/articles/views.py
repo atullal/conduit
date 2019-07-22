@@ -44,7 +44,7 @@ class ArticleViewSet(mixins.CreateModelMixin, mixins.ListModelMixin, mixins.Retr
             'request': request,
         }
         serializer_data = request.data.get('article', {})
-
+        print(serializer_data)
         serializer = self.serializer_class(
             data=serializer_data, context=serializer_context
         )

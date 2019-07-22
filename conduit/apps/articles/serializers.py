@@ -15,6 +15,8 @@ class ArticleSerializer(serializers.ModelSerializer):
         method_name='get_favorites_count'
     )
 
+    image = serializers.SerializerMethodField()
+
     tagList = TagRelatedField(many=True, required=False, source='tags')
 
     createdAt = serializers.SerializerMethodField(method_name='get_created_at')
@@ -22,7 +24,7 @@ class ArticleSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Article
-        fields = ('author', 'body', 'createdAt', 'description', 'favorited', 'favoritesCount', 'tagList',
+        fields = ('author', 'body', 'image', 'createdAt', 'description', 'favorited', 'favoritesCount', 'tagList',
                   'slug', 'title', 'updatedAt', )
 
     def create(self, validated_data):
@@ -30,7 +32,6 @@ class ArticleSerializer(serializers.ModelSerializer):
         tags = validated_data.pop('tags', [])
 
         article = Article.objects.create(author=author, **validated_data)
-
         for tag in tags:
             article.tags.add(tag)
 
@@ -55,6 +56,13 @@ class ArticleSerializer(serializers.ModelSerializer):
 
     def get_updated_at(self, instance):
         return instance.updated_at.isoformat()
+
+    def get_image(self, obj):
+        print(obj)
+        if obj.image:
+            return obj.image
+
+        return 'https://static.productionready.io/images/smiley-cyrus.jpg'
 
 
 class CommentSerializer(serializers.ModelSerializer):

@@ -19,8 +19,9 @@ class Article(TimestampedModel):
         'articles.Tag', related_name='articles'
     )
 
-    img = models.URLField(blank=True)
+    image = models.URLField(blank=True)
 
+    
     def __str__(self):
         return self.title
 
